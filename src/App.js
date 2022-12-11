@@ -29,10 +29,15 @@ function App() {
       date: new Date(2021, 5, 12),
     },
   ];
+
+  const addExpenseHandler = (expense) => {
+    console.log('In App.js');
+    console.log(expense);
+  };
+
   return (
     <div className="bg-slate-500 p-8">
-      {/* <h2 className="mb-8 font-bold text-3xl">Let's get started with React.js</h2> */}
-      <NewExpense />
+      <NewExpense  onAddExpense={addExpenseHandler}/>
       <Expense items={expenses}/>
     </div>
   );
