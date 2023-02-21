@@ -5,6 +5,9 @@ const ExpenseForm = (props) => {
     const [enteredTitle, setEnteredTitle] = useState('');
     const [enteredAmount, setEnteredAmount] = useState('');
     const [selectedDate, setSelectedDate] = useState('');
+    const [isExpensFormVisible, setIsExpenseFormVisible] = useState(false);
+
+
     // ALternate way 
     // const [userInput, setUserInput] = useState({
     //     enteredTitle: '',
@@ -48,16 +51,30 @@ const ExpenseForm = (props) => {
             amount: enteredAmount,
             date: new Date(selectedDate),
         };
-        // console.log(expenseData);
-        props.onSaveExpenseData(expenseData);
-        setEnteredTitle('');
-        setEnteredAmount('');
-        setSelectedDate('')
+        
+
+        if(enteredTitle.length === 0 && enteredAmount.length === 0 && selectedDate.length === 0){
+            alert('Please fill the data');
+        } else {
+            props.onSaveExpenseData(expenseData);
+            setEnteredTitle('');
+            setEnteredAmount('');
+            setSelectedDate('');
+            setIsExpenseFormVisible(false);
+        }
     };
 
+   const handleOpenExpenseForm = () => {
+        setIsExpenseFormVisible(true);
+    }
+    const handleCloseExpenseForm = () => {
+        setIsExpenseFormVisible(false);
+    }
+
     return (
-        <form onSubmit={submitHandler}>
-            <div className="bg-purple-400 py-6 px-6 rounded-3xl mb-6">
+        <form onSubmit={submitHandler} id="expense-form">
+        {isExpensFormVisible ? 
+            (<div className="bg-purple-400 py-6 px-6 rounded-3xl mb-6">
                 <div className="grid grid-rows-2 gap-6 md:grid-cols-2 mb-2">
                     <div>
                         <label className="block text-sm font-medium mb-2">Title</label>
@@ -73,9 +90,16 @@ const ExpenseForm = (props) => {
                     </div>
                 </div>
                 <div className="flex justify-end">
+                <button type="submit" className="text-white text-base bg-fuchsia-900 p-4 rounded-2xl mr-6" onClick={handleCloseExpenseForm}> Cancel </button>
                     <button type="submit" className="text-white text-base bg-fuchsia-900 p-4 rounded-2xl"> Add Expense </button>
                 </div>
-            </div>
+            </div>)   
+            : (
+                <div className='bg-purple-400 text-center rounded-3xl py-6 px-6 mb-6'>
+                    <button className="text-white text-base bg-fuchsia-900 p-4 rounded-2xl" onClick={handleOpenExpenseForm}>Add New Expense</button>
+                </div>
+            )     
+        }
         </form>
     );
 };

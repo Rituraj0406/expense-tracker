@@ -1,6 +1,7 @@
 import React,{ useState } from 'react';
-import ExpenseItem from './ExpenseItem';
 import ExpensesFilter from './ExpensesFilter';
+import ExpensesList from './ExpensesList';
+import ExpensesChart from '../Expenses/ExpensesChart';
 
 function Expense(props){
 
@@ -14,36 +15,16 @@ function Expense(props){
         return expenses.date.getFullYear().toString() === filteredYear;
     });
 
-
-    let expensesContent = <p className='text-rose-500 font-bold text-3xl'>No Content Found.</p>;
-
-    if(filteredExpenses.length > 0){
-        expensesContent = filteredExpenses.map((expenses) => (
-            <ExpenseItem
-                key={expenses.id} 
-                title={expenses.title}
-                amount={expenses.amount}
-                date={expenses.date}
-            />
-        ))
-    }
-
-
     return (
-        <div className="bg-slate-900 p-6 rounded-3xl">
-            <ExpensesFilter onChangeFilter={filterChangeHandler} selected={filteredYear}/>
+        <li className='list-none'>
+            <div className="bg-slate-900 p-6 rounded-3xl">
+                <ExpensesFilter onChangeFilter={filterChangeHandler} selected={filteredYear}/>
+                <ExpensesChart expenses={filteredExpenses}/>
                 <div>
-                    {expensesContent}
-                    {/* {filteredExpenses.length === 0 ? <p className='text-rose-500 font-bold text-3xl'>No expenses Found</p>: filteredExpenses.map((expenses) => (
-                        <ExpenseItem
-                            key={expenses.id} 
-                            title={expenses.title}
-                            amount={expenses.amount}
-                            date={expenses.date}
-                        />
-                    ))} */}
+                    <ExpensesList items={filteredExpenses}/>
                 </div>
-        </div>
+            </div>
+        </li>
     );
 }
 
